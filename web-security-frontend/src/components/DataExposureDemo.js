@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const apiUrl = process.env.REACT_APP_API_URL;
+console.log(apiUrl);
+
 const DataExposureDemo = () => {
   const [vulnerableData, setVulnerableData] = useState(null);
   const [safeData, setSafeData] = useState(null);
