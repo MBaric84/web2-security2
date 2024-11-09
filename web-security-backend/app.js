@@ -5,9 +5,9 @@ const xssRoutes = require('./routes/xss');
 const dataExposureRoutes = require('./routes/dataExposure');
 
 const app = express();
-const PORT=process.env.PORT || 3000;
+const PORT=process.env.PORT || 5000;
 
-app.use(cors({ origin: 'http://localhost:5000' }));
+app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(helmet());
 app.use(express.json());
 
