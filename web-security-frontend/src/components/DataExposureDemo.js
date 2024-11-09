@@ -5,40 +5,39 @@ const apiUrl = process.env.REACT_APP_API_URL;
 console.log(apiUrl);
 
 const DataExposureDemo = () => {
-  const [vulnerableData, setVulnerableData] = useState(null);
-  const [safeData, setSafeData] = useState(null);
+  const [isVulnerable, setIsVulnerable] = useState(false);
+  const [data, setData] = useState(null);
 
-  const fetchVulnerableData = async () => {
+  const fetchData = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/data-exposure/vulnerable`);
-      setVulnerableData(response.data);
+      const response = await axios.get(`${apiUrl}/data-exposure`, {
+        params: { vulnerable: isVulnerable }
+      });
+      setData(response.data);
     } catch (error) {
-      console.error("Error fetching vulnerable data", error);
-    }
-  };
-
-  const fetchSafeData = async () => {
-    try {
-      const response = await axios.get(`${apiUrl}/data-exposure/safe`);
-      setSafeData(response.data);
-    } catch (error) {
-      console.error("Error fetching safe data", error);
+      console.error('Error fetching data', error);
     }
   };
 
   return (
     <div>
       <h2>Sensitive Data Exposure Demo</h2>
-      <button onClick={fetchVulnerableData}>Fetch Vulnerable Data</button>
-      <button onClick={fetchSafeData}>Fetch Safe Data</button>
-      <div>
-        <h3>Vulnerable Data:</h3>
-        <pre>{JSON.stringify(vulnerableData, null, 2)}</pre>
-      </div>
-      <div>
-        <h3>Safe Data:</h3>
-        <pre>{JSON.stringify(safeData, null, 2)}</pre>
-      </div>
+      
+      <label>
+        Enable Data Exposure Vulnerability
+        <input
+          type="checkbox"
+          checked={isVulnerable}
+          onChange={() => setIsVulnerable(!isVulnerable)}
+        />
+      </label>
+      
+      <button onClick={fetchData}>
+        {isVulnerable ? 'Fetch Vulnerable Data' : 'Fetch Safe Data'}
+      </button>
+      
+      <h3>{isVulnerable ? 'Vulnerable Data:' : 'Safe Data:'}</h3>
+      <pre>{data ? JSON.stringify(data, null, 2) : 'No data fetched yet'}</pre>
     </div>
   );
 };

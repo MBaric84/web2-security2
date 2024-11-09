@@ -1,21 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const sensitiveData = {
-    secretToken: "abc123",
-    creditCardNumber: "1234-5678-9012-3456",
-};
+router.get('/', (req, res) => {
+    const isVulnerable = req.query.vulnerable === 'true';
 
-router.get('/vulnerable', (req, res) => {
-    res.json(sensitiveData);
-});
+    const data = isVulnerable
+      ? { secretToken: 'abc123', creditCardNumber: '1234-5678-9012-3456' }
+      : { secretToken: 'abc123', creditCardNumber: 'xxxx-xxxx-xxxx-xxxx' }; 
 
-router.get('/safe', (req, res) => {
-    const maskedData = {
-        secretToken: "abc123",
-        creditCardNumber: "xxxx-xxxx-xxxx-xxxx",
-    };
-    res.json(maskedData);
+    res.json(data);
 });
 
 module.exports = router;

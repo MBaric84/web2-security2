@@ -2,31 +2,30 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const apiUrl = process.env.REACT_APP_API_URL;
-console.log(apiUrl);
 
 const XSSDemo = () => {
     const [message, setMessage] = useState("");
-    const [vulnerableResponse, setVulnerableResponse] = useState("");
-    const [safeResponse, setSafeResponse] = useState("");
-    
-    const handleVulnerableSubmit = async () => {
-        try{
-            const response = await axios.get(`${apiUrl}/xss/vulnerable`, {params:{message},});
-            setVulnerableResponse(response.data);
+    const [response, setResponse] = useState("");
+    const [isVulnerable, setIsVulnerable] = useState(false);
+
+    const handleSubmit = async () => {
+        try {
+            const url = `${apiUrl}/xss`;
+            console.log("Requesting URL:", url);
+            const response = await axios.get(url, { 
+                params: { 
+                    message: message,
+                    vulnerable: isVulnerable  //Toggle safe and vulnerable modes
+                }
+            });
+            setResponse(response.data);
         } catch (error) {
-            console.error("Error calling vulnerable endpoint", error);
+            console.error("Error fetching XSS data", error);
         }
     };
-    const handleSafeSubmit = async () => {
-        try{
-            const response = await axios.get(`${apiUrl}/xss/safe`, {params:{message},});
-            setSafeResponse(response.data);
-        } catch (error) {
-            console.error("Error calling safe endpoint", error);
-        }
-    };
-        return (
-            <div>
+
+    return (
+        <div>
             <h2>Cross-Site Scripting (XSS) Demo</h2>
             <input
               type="text"
@@ -34,18 +33,23 @@ const XSSDemo = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <button onClick={handleVulnerableSubmit}>Test Vulnerable Endpoint</button>
-            <button onClick={handleSafeSubmit}>Test Safe Endpoint</button>
+            <label>
+              Enable XSS Vulnerability
+              <input
+                type="checkbox"
+                checked={isVulnerable}
+                onChange={() => setIsVulnerable(!isVulnerable)}
+              />
+            </label>
+            <button onClick={handleSubmit}>
+              {isVulnerable ? "Test Vulnerable Response" : "Test Safe Response"}
+            </button>
             <div>
-              <h3>Vulnerable Response:</h3>
-              <div dangerouslySetInnerHTML={{ __html: vulnerableResponse }} />
+              <h3>{isVulnerable ? "Vulnerable Response:" : "Safe Response:"}</h3>
+              <div dangerouslySetInnerHTML={{ __html: response }} />
             </div>
-            <div>
-              <h3>Safe Response:</h3>
-              <div>{safeResponse}</div>
-            </div>
-          </div>
-        );
-        }
+        </div>
+    );
+};
 
 export default XSSDemo;
