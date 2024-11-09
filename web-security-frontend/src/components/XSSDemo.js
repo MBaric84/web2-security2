@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const apiUrl = process.env.REACT_APP_API_URL
+
+
+
 const XSSDemo = () => {
     const [message, setMessage] = useState("");
     const [vulnerableResponse, setVulnerableResponse] = useState("");
     const [safeResponse, setSafeResponse] = useState("");
-
+    
     const handleVulnerableSubmit = async () => {
         try{
-            const response = await axios.get(`http://localhost:3000/xss/vulnerable`, {params:{message},});
+            const response = await axios.get(`${apiUrl}/xss/vulnerable`, {params:{message},});
             setVulnerableResponse(response.data);
         } catch (error) {
             console.error("Error calling vulnerable endpoint", error);
@@ -16,7 +20,7 @@ const XSSDemo = () => {
     };
     const handleSafeSubmit = async () => {
         try{
-            const response = await axios.get(`http://localhost:3000/xss/safe`, {params:{message},});
+            const response = await axios.get(`${apiUrl}/xss/safe`, {params:{message},});
             setSafeResponse(response.data);
         } catch (error) {
             console.error("Error calling safe endpoint", error);

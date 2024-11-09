@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const apiUrl = process.env.REACT_APP_API_URL;
 const DataExposureDemo = () => {
   const [vulnerableData, setVulnerableData] = useState(null);
   const [safeData, setSafeData] = useState(null);
 
   const fetchVulnerableData = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/data-exposure/vulnerable');
+      const response = await axios.get('${apiUrl}/data-exposure/vulnerable');
       setVulnerableData(response.data);
     } catch (error) {
       console.error("Error fetching vulnerable data", error);
@@ -16,7 +17,7 @@ const DataExposureDemo = () => {
 
   const fetchSafeData = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/data-exposure/safe');
+      const response = await axios.get('${apiUrl}/data-exposure/safe');
       setSafeData(response.data);
     } catch (error) {
       console.error("Error fetching safe data", error);
