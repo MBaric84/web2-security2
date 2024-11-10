@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 
     const data = isVulnerable
       ? { secretToken: 'abc123', creditCardNumber: '1234-5678-9012-3456' }
-      : { secretToken: 'abc123', creditCardNumber: 'xxxx-xxxx-xxxx-xxxx' }; 
+      : { secretToken: 'axxxx3', creditCardNumber: 'xxxx-xxxx-xxxx-xxxx' }; 
 
     res.json(data);
 });
