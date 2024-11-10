@@ -17,7 +17,17 @@ const DataExposureDemo = () => {
       });
       setData(response.data);
 
+      //Loggaju se podaci
       setLog(prevLog => [...prevLog, `Received data: ${JSON.stringify(response.data)}`]);
+
+      //Sensitive data se spremi u local storage
+      if (isVulnerable) {
+        localStorage.setItem('sensitiveData', JSON.stringify(response.data));
+        setLog(prevLog => [...prevLog, 'Sensitive data stored in localStorage']);
+      } else {
+        localStorage.removeItem('sensitiveData');
+        setLog(prevLog => [...prevLog, 'Sensitive data cleared from localStorage']);
+      }
 
     } catch (error) {
       console.error('Error fetching data', error);
