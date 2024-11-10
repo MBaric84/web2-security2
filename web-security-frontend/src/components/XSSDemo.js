@@ -12,12 +12,19 @@ const XSSDemo = () => {
         try {
             const url = `${apiUrl}/xss`;
             console.log("Requesting URL:", url);
+            console.log("Request parameters:", { 
+                message: message,
+                vulnerable: isVulnerable 
+            });
+
             const response = await axios.get(url, { 
                 params: { 
                     message: message,
-                    vulnerable: isVulnerable  //Toggle safe and vulnerable modes
+                    vulnerable: isVulnerable  // Toggle safe and vulnerable modes
                 }
             });
+
+            console.log("Response received:", response.data);
             setResponse(response.data);
         } catch (error) {
             console.error("Error fetching XSS data", error);
